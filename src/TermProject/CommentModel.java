@@ -16,8 +16,8 @@ public class CommentModel implements Serializable {
 		Connection con = null;
 		
 		try {
-			String URL = "our homepage";
-			Class.forName("the jdbc driver");
+			String URL = "jdbc:mysql://localhost:3306/database_page";
+			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
 			String sql = "INSERT INTO comment VALUES (" + c.getCommentID();
 			sql+= ", " + c.getUserID() + ", " + c.getCommentText() + ", ";
@@ -80,8 +80,8 @@ public class CommentModel implements Serializable {
 		Connection con = null;
 		
 		try {
-			String URL = "our homepage";
-			Class.forName("the jdbc driver");
+			String URL = "jdbc:mysql://localhost:3306/database_page";
+			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
 			String sql = "UPDATE comment SET commentText = " + text + " ";
 			sql += "WHERE commentID = " + commentID;
