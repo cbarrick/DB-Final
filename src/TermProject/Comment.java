@@ -4,22 +4,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Vector;
 
 public class Comment {
 	
-	private int commentID;
+	private Integer commentID;
 	private int userID;
 	private int postID;
 	private String commentText;
 	private String timeCommented;
 	
+	private static final String URL = "jdbc:mysql://localhost:3306/database_page";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
+	
 	public Comment() {
 		
 	}
-	
-	public Comment(int ci, int ui, int pi, String ct, String tc) {
+
+	private Comment(int ci, int ui, int pi, String ct, String tc) {
 		commentID = ci;
 		userID = ui;
 		postID = pi;
@@ -27,132 +30,35 @@ public class Comment {
 		timeCommented = tc;
 	}
 
-	// creates a new comment and updates the database
-	public static void createComment(Comment c) throws SQLException {
+	//saves the comment to the database
+	public void save() {
 		Connection con = null;
 
 		try {
-			String URL = "jdbc:mysql://localhost:3306/database_page";
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "INSERT INTO Comments VALUES (" + c.getCommentID();
-			sql += ", " + c.getCommentText() + ", " + c.getTimeCommented() + ", ";
-			sql += c.getUserID() + c.getPostID() + ")";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.executeQuery();
-		} catch (Exception e) {
-			System.err.println("Could not create comment");
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					System.err.println("Could not close comment creation connection");
-				}
-			}
-		}
-	}
-
-	// gets the comment with a given id
-	public static Comment getComment(int commentID) {
-
-		Connection con = null;
-		Comment c = null;
-
-		try {
-			String URL = "jdbc:mysql://localhost:3306/database_page";
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "SELECT * FROM Comments WHERE Comment_Id = " + commentID;
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "INSERT INTO Comments VALUES (";
+			if(commentID == null)
+				sql += "default, ";
+			else
+				sql+= getCommentID() + ", ";
+			sql += getCommentText() + ", " + getTimeCommented() + ", ";
+			sql += getUserID() + getPostID() + ")";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			// these will have to be updated with actual column names
-			int ci = rs.getInt("commentID");
-			int ui = rs.getInt("userID");
-			int pi = rs.getInt("postID");
-			String text = rs.getString("commentText");
-			String time = rs.getString("timeCommented");
-			c = new Comment(ci, ui, pi, text, time);
+			postID = rs.getInt("Comment_Id");
 		} catch (Exception e) {
-			System.err.println("Could not create comment");
+			System.err.println("Could not save comment");
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
 				} catch (Exception e) {
-					System.err.println("Could not close comment creation connection");
+					System.err.println("Could not close comment saving connection");
 				}
 			}
 		}
-
-		return c;
-
-	}
-
-	// updates comment at commentID with new text
-	public static void updateComment(int commentID, String text) {
-
-		Connection con = null;
-
-		try {
-			String URL = "jdbc:mysql://localhost:3306/database_page";
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "UPDATE Comments SET Description = " + text + " ";
-			sql += "WHERE Comment_Id = " + commentID;
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.executeQuery();
-		} catch (Exception e) {
-			System.err.println("Could not create comment");
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					System.err.println("Could not close comment creation connection");
-				}
-			}
-		}
-	}
-
-	// get comments associated with a given post
-	public static Vector<Comment> getComments(int postID) {
-
-		Connection con = null;
-		Vector<Comment> c = new Vector<Comment>();
-
-		try {
-			String URL = "jdbc:mysql://localhost:3306/database_page";
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "SELECT * FROM Comments WHERE Post_Id = " + postID;
-			PreparedStatement ps = con.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				// these will have to be updated with actual column names
-				int ci = rs.getInt("commentID");
-				int ui = rs.getInt("userID");
-				int pi = rs.getInt("postID");
-				String text = rs.getString("commentText");
-				String time = rs.getString("timeCommented");
-				c.addElement(new Comment(ci, ui, pi, text, time));
-			}
-
-		} catch (Exception e) {
-			System.err.println("Could not create comment");
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					System.err.println("Could not close comment creation connection");
-				}
-			}
-		}
-
-		return c;
-
 	}
 	
 	public int getCommentID() {
@@ -193,5 +99,79 @@ public class Comment {
 	
 	public void setTimeCommented(String tc) {
 		timeCommented = tc;
+	}
+	
+
+	// gets the comment with a given id
+	public static Comment getCommentByID(int commentID) {
+
+		Connection con = null;
+		Comment c = null;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "SELECT * FROM Comments WHERE Comment_Id = " + commentID;
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			// these will have to be updated with actual column names
+			int ci = rs.getInt("commentID");
+			int ui = rs.getInt("userID");
+			int pi = rs.getInt("postID");
+			String text = rs.getString("commentText");
+			String time = rs.getString("timeCommented");
+			c = new Comment(ci, ui, pi, text, time);
+		} catch (Exception e) {
+			System.err.println("Could not get comment");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close comment get connection");
+				}
+			}
+		}
+
+		return c;
+
+	}
+
+	// get comments associated with a given post
+	public static Vector<Comment> getComments(int postID) {
+
+		Connection con = null;
+		Vector<Comment> c = new Vector<Comment>();
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "SELECT * FROM Comments WHERE Post_Id = " + postID;
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int ci = rs.getInt("Comment_Id");
+				int ui = rs.getInt("User_Id");
+				int pi = rs.getInt("Post_Id");
+				String text = rs.getString("Description");
+				String time = rs.getString("Comment_Date");
+				c.addElement(new Comment(ci, ui, pi, text, time));
+			}
+
+		} catch (Exception e) {
+			System.err.println("Could not get post's comment");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close post's comment get connection");
+				}
+			}
+		}
+
+		return c;
+
 	}
 }
