@@ -19,9 +19,9 @@ public class CommentModel implements Serializable {
 			String URL = "jdbc:mysql://localhost:3306/database_page";
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "INSERT INTO comment VALUES (" + c.getCommentID();
-			sql+= ", " + c.getUserID() + ", " + c.getCommentText() + ", ";
-			sql += c.getTimeCommented() + ")";
+			String sql = "INSERT INTO Comments VALUES (" + c.getCommentID();
+			sql+= ", " + c.getCommentText() + ", " + c.getTimeCommented() + ", ";
+			sql += c.getUserID() + c.getPostID()  + ")";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.executeQuery();
 		} catch (Exception e) {
@@ -47,7 +47,7 @@ public class CommentModel implements Serializable {
 			String URL = "jdbc:mysql://localhost:3306/database_page";
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "SELECT * FROM comment WHERE commentID = " + commentID;
+			String sql = "SELECT * FROM Comments WHERE Comment_Id = " + commentID;
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
@@ -83,8 +83,8 @@ public class CommentModel implements Serializable {
 			String URL = "jdbc:mysql://localhost:3306/database_page";
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "UPDATE comment SET commentText = " + text + " ";
-			sql += "WHERE commentID = " + commentID;
+			String sql = "UPDATE Comments SET Description = " + text + " ";
+			sql += "WHERE Comment_Id = " + commentID;
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.executeQuery();
 		} catch (Exception e) {
@@ -110,7 +110,7 @@ public class CommentModel implements Serializable {
 			String URL = "jdbc:mysql://localhost:3306/database_page";
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, "root", "rootpassword");
-			String sql = "SELECT * FROM comment WHERE postID = " + postID;
+			String sql = "SELECT * FROM Comments WHERE Post_Id = " + postID;
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
