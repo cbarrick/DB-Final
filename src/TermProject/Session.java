@@ -7,30 +7,57 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 
-public class Sessions {
+public class Session {
 	
-	private Integer SessionsID;
+	private Integer sessionID;
 	private int userID;
-	private String SessionsTS;
+	private String sessionTS;
 
 	private static final String URL = "jdbc:mysql://localhost:3306/database_page";
 	private static final String ROOT = "root";
 	private static final String ROOTPW = "root123";
 	
-	public Sessions() {
+	public Session() {
 		
 	}
 
-	public Sessions(int si, int ui, String ts) {
-		SessionsID = si;
+	public Session(int si, int ui, String ts) {
+		sessionID = si;
 		userID = ui;
-		SessionsTS = ts;
+		sessionTS = ts;
 	}
 
+	public void save() {
+		Connection con = null;
 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "INSERT INTO Comments VALUES (";
+			if(sessionID == null)
+				sql += "default, ";
+			else
+				sql+= getSessionID() + ", ";
+			sql += getUserID() + ", " + getSessionTS() + ", ";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			sessionID = rs.getInt("Session_Id");
+		} catch (Exception e) {
+			System.err.println("Could not save session");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close session saving connection");
+				}
+			}
+		}
+	}
 
-	public int getSessionsID() {
-		return SessionsID;
+	public int getSessionID() {
+		return sessionID;
 	}
 	
 	
@@ -38,20 +65,20 @@ public class Sessions {
 		return userID;
 	}
 	
-	public String getSessionsTS() {
-		return SessionsTS;
+	public String getSessionTS() {
+		return sessionTS;
 	}
 	
-	public void setSessionsTS(String ts) {
-		SessionsTS = ts;
+	public void setSessionTS(String ts) {
+		sessionTS = ts;
 	}
 
 
 	//get sessionsID with a given userID
-	public static Sessions getSessionsBYID(int userID) {
+	public static Session getSessionBYID(int userID) {
 
 		Connection con = null;
-		Sessions c = null;
+		Session c = null;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -64,7 +91,7 @@ public class Sessions {
 			int si = rs.getInt("SessionsID");
 			int ui = rs.getInt("userID");
 			String ts = rs.getString("SessionsTS");
-			c = new Sessions(si, ui, ts);
+			c = new Session(si, ui, ts);
 		} catch (Exception e) {
 			System.err.println("Could not get SessionsID");
 		} finally {
