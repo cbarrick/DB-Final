@@ -10,6 +10,7 @@ import java.util.Vector;
 
 public class Session {
 	
+
 	private Integer SessionsID;
 	//private Integer userID;
 	private java.sql.Date SessionsTS;
@@ -23,22 +24,52 @@ public class Session {
 		
 	}
 
+
 	public Session(Integer si,java.sql.Date ts, String email) {
 		SessionsID = si;
 		//userID = ui;
 		SessionsTS = ts;
 		Email = email;
+
 	}
 
+	public void save() {
+		Connection con = null;
 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "INSERT INTO Comments VALUES (";
+			if(sessionID == null)
+				sql += "default, ";
+			else
+				sql+= getSessionID() + ", ";
+			sql += getUserID() + ", " + getSessionTS() + ", ";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			sessionID = rs.getInt("Session_Id");
+		} catch (Exception e) {
+			System.err.println("Could not save session");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close session saving connection");
+				}
+			}
+		}
+	}
 
-	public int getSessionsID() {
-		return SessionsID;
+	public int getSessionID() {
+		return sessionID;
 	}
 	public void setSessionsID(Integer sid){
 		SessionsID = sid;
 	}
 	
+
 	
 //	public int getUserID() {
 //		return userID;
@@ -50,6 +81,7 @@ public class Session {
 	
 	public void setSessionsTS(java.sql.Date ts) {
 		SessionsTS = ts;
+
 	}
 	public String getEmail() {
 		return Email;
@@ -58,6 +90,7 @@ public class Session {
 	public void setEmail(String email) {
 		Email = email;
 	}
+
 
 	/*
 	 * 
@@ -144,6 +177,7 @@ public class Session {
 	 */
 	public static Session getSessionByUser(String user) {
 
+
 		Connection con = null;
 		Session c = null;
 
@@ -156,9 +190,11 @@ public class Session {
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			int si = rs.getInt("SessionsID");
+
 			java.sql.Date ts = rs.getDate("SessionsTS");
 			String email = rs.getString("Email");
 			c = new Session(si,ts,email);
+
 		} catch (Exception e) {
 			System.err.println("Could not get SessionsID");
 		} finally {

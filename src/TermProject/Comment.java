@@ -47,7 +47,7 @@ public class Comment {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			postID = rs.getInt("Comment_Id");
+			commentID = rs.getInt("Comment_Id");
 		} catch (Exception e) {
 			System.err.println("Could not save comment");
 		} finally {
