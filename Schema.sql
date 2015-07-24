@@ -32,8 +32,8 @@ FOREIGN KEY (User_Id) REFERENCES Users(User_Id)
 
 CREATE TABLE Sessions (
 Session_Id INT(6)  AUTO_INCREMENT PRIMARY KEY,
-User_Id INT(6) ,
+Email VARCHAR(50) ,
 Session_ts TIMESTAMP,
 KEY (Session_Id),
-FOREIGN KEY (User_Id) REFERENCES Users(User_Id)
+FOREIGN KEY (Email) REFERENCES Users(Email)
 );
