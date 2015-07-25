@@ -16,6 +16,8 @@ public class Post {
 	private String PostText;
 	private String timeCommented;
 	
+	private static int numPosts = 0;
+	
 	private static final String URL = "jdbc:mysql://localhost:3306/database_page";
 	private static final String ROOT = "root";
 	private static final String ROOTPW = "root123";
@@ -32,7 +34,7 @@ public class Post {
 		timeCommented =tc;
 	}
 
-	//saves the comment to the database
+	//saves the post to the database
 	public void save() {
 		Connection con = null;
 
@@ -50,6 +52,7 @@ public class Post {
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			postID = rs.getInt("Comment_Id");
+			numPosts++;
 		} catch (Exception e) {
 			System.err.println("Could not save comment");
 		} finally {
@@ -61,6 +64,10 @@ public class Post {
 				}
 			}
 		}
+	}
+	
+	public static int getNumPosts() {
+		return numPosts;
 	}
 	
 	public int getPostID() {
@@ -153,7 +160,7 @@ public class Post {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "SELECT * FROM posts WHERE Post_Date > " + java.sql.Date.valueOf(from)+ " AND Post_Date < " +java.sql.Date.valueOf(totime);//from and totime must be in the proper yyyy-MM-dd format
+			String sql = "SELECT * FROM posts WHERE Post_Date > " + from +" and Post_Date < "+ totime;
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
