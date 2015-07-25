@@ -83,14 +83,11 @@ public class Post {
 	public void setPostTitle(String title){
 		PostTitle=title;
 	}
-
 	
 	//the comments have this but im not sure it is needed
 	public void setPostID(int pi) {
 		postID = pi;
 	}
-	
-	
 	
 	public void setPostText(String ct) {
 		PostText = ct;
@@ -110,7 +107,7 @@ public class Post {
 	}
 	
 
-	// gets the comment with a given id
+	// gets the post with a given id
 	public static Post getPostByID(int PID) {
 
 		Connection con = null;
@@ -147,20 +144,16 @@ public class Post {
 
 	}
 
-	// get comments associated with a given post
+	// get posts between two dates
 	public static Vector<Post> getPostByDate(String from, String totime) {
 
 		Connection con = null;
 		Vector<Post> c = new Vector<Post>();
 
-		//may want to put from and totime in proper format here ex 1000-09-21
-		//java.sql.Date.valueOf(String date) will help put date into proper format
 		try {
-			
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "SELECT * FROM posts WHERE Post_Date > " + java.sql.Date.valueOf(from)+ " AND Post_Date < " +java.sql.Date.valueOf(totime);//from and totime must be in the proper yyyy-MM-dd format
-		
+			String sql = "SELECT * FROM posts WHERE Post_Date > " + from +" and Post_Date < "+ totime;
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -187,5 +180,64 @@ public class Post {
 
 		return c;
 
+	}
+	
+	//returns a vector of all post id's
+	public static Vector<Integer> getPostIDs() {
+		
+		Connection con = null;
+		Vector<Integer> postIDs = new Vector<Integer>();
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "SELECT Post_Id FROM posts";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+				postIDs.addElement(rs.getInt("Post_Id"));
+		} catch (Exception e) {
+			System.err.println("Could not get post id's");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close post id's connection");
+				}
+			}
+		}
+
+		return postIDs;
+		
+	}
+	
+	//returns posts matching a search on post title
+	public static Vector<Post> searchTitle(String s) {
+		
+		Connection con = null;
+		Vector<Post> searchResults = new Vector<Post>();
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "SELECT * FROM posts WHERE Post_Title LIKE %" + s + "%";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+				searchResults.addElement(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getString("Post_Date")));
+		} catch (Exception e) {
+			System.err.println("Could not search post titles");
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					System.err.println("Could not close post search connection");
+				}
+			}
+		}
+
+		return searchResults;
 	}
 }
