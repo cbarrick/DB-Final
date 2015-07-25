@@ -5,7 +5,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CommentAction extends ActionSupport {
 
-	private Integer id;
+	private Integer commentID;
 	public Integer getCommentID() {
 		return commentID;
 	}
@@ -34,7 +34,7 @@ public class CommentAction extends ActionSupport {
 	}
 
 	public void setComment(String commentText) {
-		comment = commentText;
+		this.commentText = commentText;
 	}
 
 	public java.sql.Date getCommentDate() {
