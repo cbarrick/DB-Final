@@ -13,9 +13,9 @@ public class Session {
 	private java.sql.Date sessionTS;
 	private String email;
 
-	private static final String URL = "jdbc:mysql://localhost/final_project";
-	private static final String ROOT = "mgadgil09";
-	private static final String ROOTPW = "mgadgil09";
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
 	
 	public Session() {
 		

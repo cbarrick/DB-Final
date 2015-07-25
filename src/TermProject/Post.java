@@ -17,8 +17,7 @@ public class Post {
 	private String timeCommented;
 	
 	private static int numPosts = 0;
-	
-	private static final String URL = "jdbc:mysql://localhost:3306/database_page";
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
 	private static final String ROOT = "root";
 	private static final String ROOTPW = "root123";
 	
