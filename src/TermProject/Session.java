@@ -5,16 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 
 
 public class Session {
 	
-
-	private Integer SessionsID;
-	//private Integer userID;
-	private java.sql.Date SessionsTS;
-	private String Email;
+	private Integer sessionID;
+	private java.sql.Date sessionTS;
+	private String email;
 
 	private static final String URL = "jdbc:mysql://localhost/final_project";
 	private static final String ROOT = "mgadgil09";
@@ -25,26 +22,24 @@ public class Session {
 	}
 
 
-	public Session(Integer si,java.sql.Date ts, String email) {
-		SessionsID = si;
-		//userID = ui;
-		SessionsTS = ts;
-		Email = email;
-
+	public Session(Integer si,java.sql.Date ts, String em) {
+		sessionID = si;
+		sessionTS = ts;
+		email = em;
 	}
 
 	public void save() {
 		Connection con = null;
 
+		String sql = "INSERT INTO Session VALUES ("
+				+ ((sessionID == null) ? "default" : sessionID) + ","
+				+ "," + email
+				+ "," + sessionTS
+				+ ");";
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "INSERT INTO Comments VALUES (";
-			if(sessionID == null)
-				sql += "default, ";
-			else
-				sql+= getSessionID() + ", ";
-			sql += getUserID() + ", " + getSessionTS() + ", ";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
@@ -66,29 +61,23 @@ public class Session {
 		return sessionID;
 	}
 	public void setSessionsID(Integer sid){
-		SessionsID = sid;
+		sessionID = sid;
 	}
 	
-
-	
-//	public int getUserID() {
-//		return userID;
-//	}
-//	
 	public java.sql.Date getSessionsTS() {
-		return SessionsTS;
+		return sessionTS;
 	}
 	
 	public void setSessionsTS(java.sql.Date ts) {
-		SessionsTS = ts;
+		sessionTS = ts;
 
 	}
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 
-	public void setEmail(String email) {
-		Email = email;
+	public void setEmail(String em) {
+		email = em;
 	}
 
 
@@ -105,7 +94,7 @@ public class Session {
 			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
-			if(SessionsID==null){
+			if(sessionID==null){
 				try{
 					String insertSql = "insert into sessions values(default,?,?)";
 					PreparedStatement ps = conn.prepareStatement(insertSql);
