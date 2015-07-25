@@ -1,22 +1,34 @@
 package TermProject;
 
+import java.util.Map;
 import java.util.Vector;
+
+import org.apache.struts2.interceptor.ParameterAware;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class SearchAction extends ActionSupport {
+public class SearchAction extends ActionSupport implements ParameterAware {
 
+	String search, start, end;
+	
 	//searches post table for posts with titles containing a string
-	public Vector<Post> searchTitles(String s) {
+	public Vector<Post> searchTitles() {
 		
-		return Post.searchTitle(s);
+		return Post.searchTitle(search);
 		
 	}
 	
 	//searches post table for posts within a start date s and end date e
-	public Vector<Post> searchByDate(String s, String e) {
+	public Vector<Post> searchByDate() {
 		
-		return Post.getPostByDate(s, e);
+		return Post.getPostByDate(start, end);
 		
+	}
+
+	//three parameters, Search_String, Start_Date, End_Date
+	public void setParameters(Map<String, String[]> map) {
+		search = map.get("Search_String")[0];
+		start = map.get("Start_Date")[0];
+		end = map.get("End_Date")[0];
 	}
 	
 }
