@@ -153,7 +153,7 @@ public class Post {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "SELECT * FROM posts WHERE Post_Date > " + from +" and Post_Date < "+ totime;
+			String sql = "SELECT * FROM posts WHERE Post_Date > " + java.sql.Date.valueOf(from)+ " AND Post_Date < " +java.sql.Date.valueOf(totime);//from and totime must be in the proper yyyy-MM-dd format
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
