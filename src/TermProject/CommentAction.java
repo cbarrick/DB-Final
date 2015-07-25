@@ -5,12 +5,12 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CommentAction extends ActionSupport {
 
-	private Integer commentID;
+	private Integer id;
 	public Integer getCommentID() {
 		return commentID;
 	}
 
-	public void setCommentId(Integer id) {
+	public void setCommentID(Integer id) {
 		commentID = id;
 	}
 
