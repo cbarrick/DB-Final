@@ -1,4 +1,4 @@
-package com.Dbms.Struts2.Demo;
+package TermProject;
 
 import java.sql.Date;
 import java.util.Map;

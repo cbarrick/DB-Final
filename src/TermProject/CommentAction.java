@@ -1,4 +1,4 @@
-package com.Dbms.Struts2.Demo;
+package TermProject;
 
 
 import com.opensymphony.xwork2.ActionSupport;

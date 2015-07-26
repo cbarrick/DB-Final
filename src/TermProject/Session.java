@@ -1,4 +1,4 @@
-package com.Dbms.Struts2.Demo;
+package TermProject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,9 +14,9 @@ public class Session {
 	private java.sql.Timestamp SessionsTS;
 	private Integer UserID;
 	
-	String URL = "jdbc:mysql://localhost:3306/Blog";
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "root", "root123");
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
 	
 	public Session() {
 		
