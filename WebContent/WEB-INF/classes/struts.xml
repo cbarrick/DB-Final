@@ -6,7 +6,6 @@
 <struts>
 	<constant name="struts.devMode" value="true" />
 	<package name="UserLogin" extends="struts-default">
-	 
 		<action name="signupaction" 
 			class="TermProject.SignUpAction"
 			method="signUp">
@@ -14,13 +13,13 @@
 		</action>   
 	      
 		<action name="loginaction" 
-			class="TermProject.AuthenticationLogin"
+			class="TermProject.AuthenticationLoginAction"
 			method="login">
 			<result name="success">/Welcome.jsp</result>
 			<result name="input">/index.jsp</result>
 		</action>
 		
-		<action name="logout" class="TermProject.AuthenticationLogin"
+		<action name="logout" class="TermProject.AuthenticationLoginAction"
 			method="logout">
 			<result name="success">/logout.jsp</result>
 		</action>
