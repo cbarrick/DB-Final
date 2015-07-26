@@ -16,40 +16,21 @@
 	</head>
 	<body>
 
-		<nav class="navbar navbar-default container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Blog</a>
-			</div>
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
-				</ul>
-				<form class="navbar-form navbar-right" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="username">
-						<input type="password" class="form-control" placeholder="password">
-					</div>
-					<button id="login-btn" class="btn btn-default">Login</button>
-					<button id="signup-btn" class="btn btn-default">Signup</button>
-				</form>
-			</div>
-		</nav>
+		<jsp:include page="navbar.jsp"></jsp:include>
 
 		<main class="container">
 			<article>
-				<header>
+				<header class="page-header">
 					<h1>{{title}}</h1>
-					<time><s:property value="postTime"/></time>
+					<time datetime="{{date-rfc3339}}">{{date-human}}</time>
 				</header>
 				<div class="post">
-					<s:property value="text"/>"
+					<p>{{post-text}}</p>
+					<p>Lorem ipsum dolor sit amet, usu ad diam facilisi disputationi, nec expetenda ocurreret principes ea, no volumus expetenda pri. Et inani erant consetetur ius, ius eu audire viderer lucilius, per oratio utinam salutatus id. Te illum saepe mei, est ex eius tibique. Aeque maiestatis usu at, oportere ocurreret eum at.</p>
+					<p>Quo dicta scripserit at. No vel nobis persius liberavisse. Insolens incorrupte reprehendunt eum no, eos tibique vituperatoribus ea. Cu est magna adolescens, ad nec dicat facilisi signiferumque. Sed id idque deleniti suavitate, usu id mucius ullamcorper.</p>
+					<p>Nec ei solet nominati necessitatibus, solum neglegentur sed te. Vidisse vocibus maluisset vel ne, at mea quis praesent, partem option consequuntur id usu. Cu eos ceteros salutandi, no nullam assueverit mea. Vix id percipitur necessitatibus, id duo persius eripuit.</p>
+					<p>Ne his soleat persius tincidunt, case solet lobortis in eum. Molestie disputando eu est, quis dolores partiendo in eos. Ad purto adipisci nam, cibo gubergren ne ius. Sed etiam minimum percipit an, nulla tamquam ancillae cu vel.</p>
+					<p>Sit erant platonem salutatus ex. Usu quis erant oportere no. Dicant facete fastidii at pro, illud bonorum quo et. Harum urbanitas suscipiantur quo ne, at ipsum vituperatoribus vim. Ad nam malis debet detraxit, quo an postea graecis, aliquam euripidis vis ne. Euismod utroque oportere pro et, id sanctus minimum maiestatis has. In lucilius dissentias mei, feugait omittam vix ne.</p>
 				</div>
 			</article>
 		</main>
@@ -60,19 +41,19 @@
 					<h3 class="panel-title">Comments</h3>
 				</header>
 
-				<div class="list-group">
-					<div class="list-group-item">
+				<ol class="list-group">
+					<li class="panel-body list-group-item">
 						{{comment-text}}
-					</div>
-					<div class="list-group-item">
+					</li>
+					<li class="panel-body list-group-item">
 						{{comment-text}}
-					</div>
-					<div class="list-group-item">
+					</li>
+					<li class="panel-body list-group-item">
 						{{comment-text}}
-					</div>
-				</div>
+					</li>
+				</ol>
 
-				<form class="panel-body">
+				<form class="panel-body" action="{{new-comment-url}}" method="post">
 					<div class="form-group">
 						<label for="new-comment-text">New Comment</label>
 						<textarea id="new-comment-text" class="form-control" placeholder="Comment"></textarea>

@@ -1,16 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Successful Signup</title>
-</head>
-<body>
-<center>
-        <h3>Welcome <i>${sessionScope.user}</i>, you have signed up in successfully!</h3>
-        <h3><a href="index.jsp">Login</a></h3>
-        
-    </center>
-</body>
+<!DOCTYPE html>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>{{title}}</title>
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+		<!-- JavaScript -->
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+
+		<jsp:include page="navbar.jsp"></jsp:include>
+
+		<main class="container">
+			<section>
+				<header class="page-header">
+					<h1>Signup</h1>
+				</header>
+				<form action="<s:url action='signupaction'/>" method="post">
+					<input class="form-control" type="hidden" name="Role" value="Guest">
+					<div class="form-group">
+						<label for="email-input">Email</label>
+						<input id="email-input" class="form-control" type="text" name="email">
+					</div>
+					<div class="form-group">
+						<label for="password-input">Password</label>
+						<input id="password-input" class="form-control" type="password" name="password">
+					</div>
+					<button class="btn btn-default">Submit</button>
+				</form>
+			</section>
+		</main>
+
+	</body>
 </html>
