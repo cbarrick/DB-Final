@@ -14,9 +14,9 @@ public class Session {
 	private java.sql.Timestamp SessionsTS;
 	private String Email;
 
-	private static final String URL = "jdbc:mysql://localhost/final_project";
-	private static final String ROOT = "mgadgil09";
-	private static final String ROOTPW = "mgadgil09";
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
 	
 	public Session() {
 		
@@ -68,7 +68,7 @@ public class Session {
 		Connection conn = null;
 		try{
 			
-			String URL = "jdbc:mysql://localhost/final_project";
+			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
 			if(SessionsID==null){
@@ -116,7 +116,7 @@ public class Session {
 //			long time = System.currentTimeMillis();
 //			java.sql.Date date = new java.sql.Date(time);
 //			setSessionsTS(date);
-			String URL = "jdbc:mysql://localhost/final_project";
+			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
 			String deleteSql = "delete from sessions where Email = ?";
