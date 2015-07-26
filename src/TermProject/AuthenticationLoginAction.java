@@ -7,22 +7,22 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AuthenticationLoginAction extends ActionSupport implements SessionAware {
+public class AuthenticationLoginAction extends ActionSupport implements SessionAware, ParameterAware {
 
-	private String user;
+	private int userID;
 	private String password;
 	private Map<String,Object>sessionMap;
 
 	public String login() {
-		String loggedUser = null;
+		Integer loggedUser = null;
 		try{
 
 			// check if the userName is already stored in the session
-			if (Session.getSessionByUser(user)!=null) {
-				Session s = Session.getSessionByUser(user);
+			if (Session.getSessionByUser(userID)!=null) {
+				Session s = Session.getSessionByUser(userID);
 				s.saveUserSession(s.getSessionsID());
-				sessionMap.put("user", user);
-				loggedUser = s.getEmail();
+				sessionMap.put("uid", userID);
+				loggedUser = s.getUserID();
 				//loggedUser = (String) sessionMap.get("user");
 			}
 
@@ -35,8 +35,8 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 			if (user != null && User.validateUser(user,password)) {
 
 				// add userName to the session
-				sessionMap.put("user", user);
-				Session s = new Session(null,null,user);
+				sessionMap.put("uid", userID);
+				Session s = new Session(null,null,userID);
 				s.saveUserSession(null);
 				return SUCCESS; // return welcome page
 			}
@@ -51,9 +51,9 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 	public String logout() {
 		// remove userName from the session
 		try{
-			if (sessionMap.containsKey("user") && Session.getSessionByUser(sessionMap.get("user").toString())!=null) {
-				Session.deleteSession(sessionMap.get("user").toString());
-				sessionMap.remove("user");
+			if (sessionMap.containsKey("uid") && Session.getSessionByUser(sessionMap.get("uid"))!=null) {
+				Session.deleteSession(sessionMap.get("uid"));
+				sessionMap.remove("uid");
 				return SUCCESS;
 			}
 		}catch(Exception e){
@@ -68,7 +68,7 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 
 	}
 
-	public String getUser() {
+	public int getUser() {
 		return user;
 	}
 
@@ -82,5 +82,12 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void setParameters(Map<String, String[]> map) {
+		
+		userID = getUserByName(Integer.parseInt(map.get("User_Id")[0]).getId();
+		password = map.get("Password")[0];
+		
 	}
 }
