@@ -86,7 +86,7 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 	
 	public void setParameters(Map<String, String[]> map) {
 		
-		userID = getUserByName(Integer.parseInt(map.get("User_Id")[0]).getId();
+		userID = getUserByName(Integer.parseInt(map.get("Email")[0]).getId();
 		password = map.get("Password")[0];
 		
 	}
