@@ -84,14 +84,14 @@ public class User {
 	/*
 	 * Login credentials validation
 	 */
-	public static boolean validateUser(String user, String pwd) {
+	public static boolean validateUser(Integer userID, String pwd) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String sql = "SELECT * FROM users WHERE";
-			sql+=" Email = ? AND Password = ?";
+			sql+=" User_Id = ? AND Password = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1,user);
+			ps.setString(1,userID.toString());
 			ps.setString(2,pwd);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next())
