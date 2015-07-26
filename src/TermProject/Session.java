@@ -1,4 +1,4 @@
-package TermProject;
+package com.Dbms.Struts2.Demo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,10 +13,10 @@ public class Session {
 	private Integer SessionsID;
 	private java.sql.Timestamp SessionsTS;
 	private Integer UserID;
-
-	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
-	private static final String ROOT = "root";
-	private static final String ROOTPW = "root123";
+	
+	String URL = "jdbc:mysql://localhost:3306/Blog";
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, "root", "root123");
 	
 	public Session() {
 		
@@ -122,7 +122,7 @@ public class Session {
 			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String deleteSql = "delete from sessions where User_Id = ?";
 			PreparedStatement ps = conn.prepareStatement(deleteSql);
-			ps.setString(1, UserID.toString());
+			ps.setInt(1, userID);
 			ps.executeUpdate();	
 		}catch(SQLException se){
 			System.err.println(se);

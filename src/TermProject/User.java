@@ -1,4 +1,4 @@
-package TermProject;
+package com.Dbms.Struts2.Demo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,9 +35,9 @@ public class User {
 	public void saveUser() throws Exception{
 		try{
 			
-			String URL = "jdbc:mysql://localhost/final_project";
+			String URL = "jdbc:mysql://localhost:3306/Blog";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, "root", "root123");
 			if(Id==null){
 				try{
 					String insertSql = "insert into users values(default,?,?,'Guest',NOW())";
@@ -125,15 +125,16 @@ public class User {
 			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
-			String sql = "SELECT User_Id FROM users WHERE";
+			String sql = "SELECT * FROM users WHERE";
 			sql+=" Email = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1,user);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()){
+			
+			rs.next();
 				User newUser = new User(rs.getInt("User_Id"),user,rs.getString("Password"),rs.getString("Role"),rs.getTimestamp("SignUp_Date"));
 				return newUser;
-			}
+			
 		} catch (Exception e) {
 			System.err.println("Invalid Email");
 			//ret = ERROR;

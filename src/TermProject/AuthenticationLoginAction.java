@@ -1,8 +1,9 @@
-package TermProject;
+package com.Dbms.Struts2.Demo;
 
 import java.sql.Date;
 import java.util.Map;
 
+import org.apache.struts2.interceptor.ParameterAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -10,6 +11,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class AuthenticationLoginAction extends ActionSupport implements SessionAware, ParameterAware {
 
 	private int userID;
+	private String user;
 	private String password;
 	private Map<String,Object>sessionMap;
 
@@ -32,7 +34,7 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 
 			// if no userName stored in the session,
 			// check the entered userName and password
-			if (user != null && User.validateUser(user,password)) {
+			if (user != null && User.validateUser(userID,password)) {
 
 				// add userName to the session
 				sessionMap.put("uid", userID);
@@ -51,8 +53,8 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 	public String logout() {
 		// remove userName from the session
 		try{
-			if (sessionMap.containsKey("uid") && Session.getSessionByUser(sessionMap.get("uid"))!=null) {
-				Session.deleteSession(sessionMap.get("uid"));
+			if (sessionMap.containsKey("uid") && Session.getSessionByUser(getUserId())!=null) {
+				Session.deleteSession((int)sessionMap.get("uid"));
 				sessionMap.remove("uid");
 				return SUCCESS;
 			}
@@ -68,10 +70,18 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 
 	}
 
-	public int getUser() {
-		return user;
+	public int getUserId() {
+		return userID;
+	}
+	
+	public void setUserId(Integer ui) {
+		this.userID = ui;
 	}
 
+	public String getUser() {
+		return user;
+	}
+	
 	public void setUser(String user) {
 		this.user = user;
 	}
@@ -86,8 +96,10 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 	
 	public void setParameters(Map<String, String[]> map) {
 		
-		userID = getUserByName(Integer.parseInt(map.get("Email")[0]).getId();
-		password = map.get("Password")[0];
+		user = map.get("user")[0];
+		password = map.get("password")[0];
+		userID = User.getUserByName(user).getId(); //**** important - this is where userid is acquired from name at login
+		
 		
 	}
 }
