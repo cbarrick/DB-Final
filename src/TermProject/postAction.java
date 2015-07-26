@@ -94,7 +94,7 @@ public class postAction extends ActionSupport implements ParameterAware {
 	@Override
 	public void setParameters(Map<String, String[]> map) {
 		
-		userId = Integer.valueOf(map.get("User_Id")[0]);
+		userId = Integer.parseInt(map.get("User_Id")[0]);
 		text = map.get("Text")[0];
 		title=map.get("Post_Title")[0];
 
