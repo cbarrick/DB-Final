@@ -38,9 +38,8 @@ CREATE TABLE Comments (
 
 CREATE TABLE Sessions (
 	Session_Id INT(6)  AUTO_INCREMENT PRIMARY KEY,
-	Email VARCHAR(50) ,
+	User_Id INT(6) ,
 	Session_ts TIMESTAMP,
-
 	KEY (Session_Id),
-	FOREIGN KEY (Email) REFERENCES Users(Email)
+	FOREIGN KEY (User_Id) REFERENCES Users(User_Id)
 );
