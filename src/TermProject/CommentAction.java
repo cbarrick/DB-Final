@@ -1,7 +1,16 @@
 package TermProject;
 
-import java.util.Vector;
+
 import com.opensymphony.xwork2.ActionSupport;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.Vector;
+
+
 
 public class CommentAction extends ActionSupport {
 
@@ -64,8 +73,8 @@ public class CommentAction extends ActionSupport {
 		}catch(Exception){
 			System.out.println("Your comment could not be submitted");
 		}
-
-		return SUCCESS;
+		newComment.save();
+		return newComment;
 	}
 
 }
