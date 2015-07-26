@@ -18,6 +18,10 @@ public class User {
 	private java.sql.Timestamp timeStamp;
 	static Connection conn = null;
 	//String ret = ERROR;
+	
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
 
 	public User(Integer id, String email, String pwd, String role, java.sql.Timestamp ts){
 		Id = id;
@@ -32,10 +36,8 @@ public class User {
 	 */
 	public void saveUser() throws Exception{
 		try{
-			
-			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			if(Id==null){
 				try{
 					String insertSql = "insert into users values(default,?,?,'Guest',NOW())";
@@ -84,10 +86,8 @@ public class User {
 	 */
 	public static boolean validateUser(String user, String pwd) {
 		try {
-			
-			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String sql = "SELECT * FROM users WHERE";
 			sql+=" Email = ? AND Password = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -97,6 +97,7 @@ public class User {
 			if(rs.next())
 			return true;
 		} catch (Exception e) {
+			System.err.println(e);
 			System.err.println("Invalid Email or Password");
 			//ret = ERROR;
 		} finally {

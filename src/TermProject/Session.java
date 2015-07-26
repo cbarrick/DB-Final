@@ -1,4 +1,4 @@
-package com.Dbms.Struts2.Demo;
+package TermProject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -70,13 +70,14 @@ public class Session {
 			
 			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			if(SessionsID==null){
 				try{
 					String insertSql = "insert into sessions values(default,?,?)";
 					PreparedStatement ps = conn.prepareStatement(insertSql);
-					ps.setTimestamp(1,getSessionsTS());
-					ps.setString(2,getEmail());
+					ps.setString(1,getEmail());
+					ps.setTimestamp(2,getSessionsTS());
+					
 					ps.executeUpdate();	
 				}catch(SQLException e){
 					System.err.println(e);
@@ -118,7 +119,7 @@ public class Session {
 //			setSessionsTS(date);
 			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String deleteSql = "delete from sessions where Email = ?";
 			PreparedStatement ps = conn.prepareStatement(deleteSql);
 			ps.setString(1,user);
