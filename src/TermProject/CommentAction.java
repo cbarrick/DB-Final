@@ -9,12 +9,17 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Vector;
+import org.apache.struts2.interceptor.ParameterAware;
 
 
-
-public class CommentAction extends ActionSupport {
+public class CommentAction extends ActionSupport implements ParameterAware {
 
 	private Integer commentID;
+	private int userID;
+	private int postID;
+	private String commentText;
+	private java.sql.Date timeCommented;
+	
 	public Integer getCommentID() {
 		return commentID;
 	}
@@ -54,11 +59,6 @@ public class CommentAction extends ActionSupport {
 		this.timeCommented = timeCommented;
 	}
 
-	private int userID;
-	private int postID;
-	private String commentText;
-	private java.sql.Date timeCommented;
-
 	public String CreateComment() {
 
 		try{
@@ -76,5 +76,5 @@ public class CommentAction extends ActionSupport {
 		newComment.save();
 		return newComment;
 	}
-
+	
 }
