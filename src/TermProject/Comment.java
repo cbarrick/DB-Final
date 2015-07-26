@@ -1,9 +1,10 @@
-package TermProject;
+package com.Dbms.Struts2.Demo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Vector;
 
 public class Comment {
@@ -12,7 +13,7 @@ public class Comment {
 	private int userID;
 	private int postID;
 	private String commentText;
-	private String timeCommented;
+	private Timestamp timeCommented;
 	
 	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
 	private static final String ROOT = "root";
@@ -22,12 +23,19 @@ public class Comment {
 		
 	}
 
-	private Comment(int ci, int ui, int pi, String ct, String tc) {
+	public Comment(Integer ci, String ct, Timestamp tc,Integer ui, Integer pi) {
 		commentID = ci;
-		userID = ui;
-		postID = pi;
 		commentText = ct;
 		timeCommented = tc;
+		userID = ui;
+		postID = pi;
+		
+		
+	}
+
+	public Comment(Integer commentID2, String string, int postID2,
+			String comment, Timestamp commentDate) {
+		// TODO Auto-generated constructor stub
 	}
 
 	//saves the comment to the database
@@ -93,11 +101,11 @@ public class Comment {
 		commentText = ci;
 	}
 	
-	public String getTimeCommented() {
+	public Timestamp getTimeCommented() {
 		return timeCommented;
 	}
 	
-	public void setTimeCommented(String tc) {
+	public void setTimeCommented(Timestamp tc) {
 		timeCommented = tc;
 	}
 	
@@ -120,8 +128,8 @@ public class Comment {
 			int ui = rs.getInt("userID");
 			int pi = rs.getInt("postID");
 			String text = rs.getString("commentText");
-			String time = rs.getString("timeCommented");
-			c = new Comment(ci, ui, pi, text, time);
+			Timestamp time = rs.getTimestamp("timeCommented");
+			c = new Comment(ci, text, time, ui, pi);
 		} catch (Exception e) {
 			System.err.println("Could not get comment");
 		} finally {
@@ -155,8 +163,8 @@ public class Comment {
 				int ui = rs.getInt("User_Id");
 				int pi = rs.getInt("Post_Id");
 				String text = rs.getString("Description");
-				String time = rs.getString("Comment_Date");
-				c.addElement(new Comment(ci, ui, pi, text, time));
+				Timestamp time = rs.getTimestamp("Comment_Date");
+				c.addElement(new Comment(ci, text, time, ui, pi));
 			}
 
 		} catch (Exception e) {
