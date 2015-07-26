@@ -1,4 +1,5 @@
-package com.Dbms.Struts2.Demo;
+package TermProject;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import com.opensymphony.xwork2.ActionSupport;
+
 
 public class User {
 
