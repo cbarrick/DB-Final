@@ -12,7 +12,7 @@ public class Session {
 	
 	private Integer SessionsID;
 	private java.sql.Timestamp SessionsTS;
-	private String Email;
+	private Integer UserID;
 
 	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
 	private static final String ROOT = "root";
@@ -22,11 +22,11 @@ public class Session {
 		
 	}
 
-	public Session(Integer si,java.sql.Timestamp ts, String email) {
+	public Session(Integer si,java.sql.Timestamp ts, Integer ui) {
 		SessionsID = si;
 		//userID = ui;
 		SessionsTS = ts;
-		Email = email;
+		UserID = ui;
 	}
 
 
@@ -52,12 +52,12 @@ public class Session {
 	public void setSessionsTS(java.sql.Timestamp ts) {
 		SessionsTS = ts;
 	}
-	public String getEmail() {
-		return Email;
+	public int getUserID() {
+		return UserID;
 	}
 
-	public void setEmail(String email) {
-		Email = email;
+	public void setUserID(int ui) {
+		UserID = ui;
 	}
 
 	/*
@@ -75,7 +75,7 @@ public class Session {
 				try{
 					String insertSql = "insert into sessions values(default,?,?)";
 					PreparedStatement ps = conn.prepareStatement(insertSql);
-					ps.setString(1,getEmail());
+					ps.setInt(1,getUserID());
 					ps.setTimestamp(2,getSessionsTS());
 					
 					ps.executeUpdate();	
@@ -85,10 +85,10 @@ public class Session {
 			}
 			else{
 				try{
-					String updateSql = "update sessions set Session_ts = ? where Email = ?";
+					String updateSql = "update sessions set Session_ts = ? where UserID = ?";
 					PreparedStatement ps = conn.prepareStatement(updateSql);
 					ps.setTimestamp(1,getSessionsTS());
-					ps.setString(2,getEmail());
+					ps.setInt(2,getUserID());
 					ps.executeUpdate();	
 				}catch(Exception e){
 					System.err.println("Unable to update Session");
@@ -120,9 +120,9 @@ public class Session {
 			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String deleteSql = "delete from sessions where Email = ?";
+			String deleteSql = "delete from sessions where User_Id = ?";
 			PreparedStatement ps = conn.prepareStatement(deleteSql);
-			ps.setString(1,user);
+			ps.setString(1, UserID.toString());
 			ps.executeUpdate();	
 		}catch(SQLException se){
 			System.err.println(se);
@@ -142,7 +142,7 @@ public class Session {
 	/*
 	 * get sessionsID with a given Email
 	 */
-	public static Session getSessionByUser(String user) {
+	public static Session getSessionByUser(Integer ui) {
 
 		Connection con = null;
 		Session c = null;
@@ -150,15 +150,15 @@ public class Session {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "select * from sessions where Email = ?";
+			String sql = "select * from sessions where User_Id = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(1,user);
+			ps.setString(1, ui.toString());
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			int si = rs.getInt("Session_Id");
 			java.sql.Timestamp ts = rs.getTimestamp("Session_ts");
-			String email = rs.getString("Email");
-			c = new Session(si,ts,email);
+			int usId = rs.getInt("User_Id");
+			c = new Session(si,ts,usId);
 		} catch (Exception e) {
 			System.err.println("Could not get SessionsID");
 		} finally {
