@@ -1,17 +1,18 @@
-package TermProject;
+package com.Dbms.Struts2.Demo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 
 public class Session {
 	
-	private Integer sessionID;
-	private java.sql.Date sessionTS;
-	private String email;
+	private Integer SessionsID;
+	private java.sql.Timestamp SessionsTS;
+	private String Email;
 
 	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
 	private static final String ROOT = "root";
@@ -21,84 +22,60 @@ public class Session {
 		
 	}
 
-
-	public Session(Integer si,java.sql.Date ts, String em) {
-		sessionID = si;
-		sessionTS = ts;
-		email = em;
+	public Session(Integer si,java.sql.Timestamp ts, String email) {
+		SessionsID = si;
+		//userID = ui;
+		SessionsTS = ts;
+		Email = email;
 	}
 
-	public void save() {
-		Connection con = null;
 
-		String sql = "INSERT INTO Session VALUES ("
-				+ ((sessionID == null) ? "default" : sessionID) + ","
-				+ "," + email
-				+ "," + sessionTS
-				+ ");";
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			PreparedStatement ps = con.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			rs.next();
-			sessionID = rs.getInt("Session_Id");
-		} catch (Exception e) {
-			System.err.println("Could not save session");
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					System.err.println("Could not close session saving connection");
-				}
-			}
-		}
-	}
 
-	public int getSessionID() {
-		return sessionID;
+	public int getSessionsID() {
+		return SessionsID;
 	}
 	public void setSessionsID(Integer sid){
-		sessionID = sid;
+		SessionsID = sid;
 	}
 	
-	public java.sql.Date getSessionsTS() {
-		return sessionTS;
+	
+//	public int getUserID() {
+//		return userID;
+//	}
+//	
+	public java.sql.Timestamp getSessionsTS() {
+		java.util.Date today = new java.util.Date();
+		SessionsTS =  new java.sql.Timestamp(today.getTime());
+		return SessionsTS;
 	}
 	
-	public void setSessionsTS(java.sql.Date ts) {
-		sessionTS = ts;
-
+	public void setSessionsTS(java.sql.Timestamp ts) {
+		SessionsTS = ts;
 	}
 	public String getEmail() {
-		return email;
+		return Email;
 	}
 
-	public void setEmail(String em) {
-		email = em;
+	public void setEmail(String email) {
+		Email = email;
 	}
-
 
 	/*
 	 * 
 	 *    Create new user
 	 */
-	public void saveUser() throws Exception{
+	public void saveUserSession(Integer sid) throws SQLException{
 		Connection conn = null;
 		try{
-			long time = System.currentTimeMillis();
-			java.sql.Date date = new java.sql.Date(time);
-			setSessionsTS(date);
-			String URL = "jdbc:mysql://localhost/final_project";
+			
+			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
-			if(sessionID==null){
+			if(SessionsID==null){
 				try{
 					String insertSql = "insert into sessions values(default,?,?)";
 					PreparedStatement ps = conn.prepareStatement(insertSql);
-					ps.setDate(1,getSessionsTS());
+					ps.setTimestamp(1,getSessionsTS());
 					ps.setString(2,getEmail());
 					ps.executeUpdate();	
 				}catch(SQLException e){
@@ -109,7 +86,7 @@ public class Session {
 				try{
 					String updateSql = "update sessions set Session_ts = ? where Email = ?";
 					PreparedStatement ps = conn.prepareStatement(updateSql);
-					ps.setDate(1,getSessionsTS());
+					ps.setTimestamp(1,getSessionsTS());
 					ps.setString(2,getEmail());
 					ps.executeUpdate();	
 				}catch(Exception e){
@@ -139,7 +116,7 @@ public class Session {
 //			long time = System.currentTimeMillis();
 //			java.sql.Date date = new java.sql.Date(time);
 //			setSessionsTS(date);
-			String URL = "jdbc:mysql://localhost/final_project";
+			//String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
 			String deleteSql = "delete from sessions where Email = ?";
@@ -166,7 +143,6 @@ public class Session {
 	 */
 	public static Session getSessionByUser(String user) {
 
-
 		Connection con = null;
 		Session c = null;
 
@@ -178,12 +154,10 @@ public class Session {
 			ps.setString(1,user);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			int si = rs.getInt("SessionsID");
-
-			java.sql.Date ts = rs.getDate("SessionsTS");
+			int si = rs.getInt("Session_Id");
+			java.sql.Timestamp ts = rs.getTimestamp("Session_ts");
 			String email = rs.getString("Email");
 			c = new Session(si,ts,email);
-
 		} catch (Exception e) {
 			System.err.println("Could not get SessionsID");
 		} finally {

@@ -1,11 +1,25 @@
 package TermProject;
 
-import java.util.Vector;
-import com.opensymphony.xwork2.ActionSupport;
 
-public class CommentAction extends ActionSupport {
+import com.opensymphony.xwork2.ActionSupport;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.Vector;
+import org.apache.struts2.interceptor.ParameterAware;
+
+
+public class CommentAction extends ActionSupport implements ParameterAware {
 
 	private Integer commentID;
+	private int userID;
+	private int postID;
+	private String commentText;
+	private java.sql.Date timeCommented;
+	
 	public Integer getCommentID() {
 		return commentID;
 	}
@@ -45,11 +59,6 @@ public class CommentAction extends ActionSupport {
 		this.timeCommented = timeCommented;
 	}
 
-	private int userID;
-	private int postID;
-	private String commentText;
-	private java.sql.Date timeCommented;
-
 	public String CreateComment() {
 
 		try{
@@ -64,8 +73,8 @@ public class CommentAction extends ActionSupport {
 		}catch(Exception){
 			System.out.println("Your comment could not be submitted");
 		}
-
-		return SUCCESS;
+		newComment.save();
+		return newComment;
 	}
-
+	
 }
