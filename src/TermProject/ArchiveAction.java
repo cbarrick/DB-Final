@@ -33,7 +33,7 @@ public class ArchiveAction extends ActionSupport implements ParameterAware {
 
 	//only parameter to be passed is called Page_Number
 	public void setParameters(Map<String, String[]> map) {
-		page = Integer.valueOf(map.get("Page_Number")[0]);
+		page = Integer.parseInt(map.get("Page_Number")[0]);
 	}
 	
 }
