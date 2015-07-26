@@ -58,7 +58,7 @@ public class SignUpAction extends ActionSupport {
 
 		try{
 
-			User newUser = new User(null,getEmail(),getPassword(),getRole(),getSignupDate());
+			User newUser = new User(null,getEmail(),getPassword(),getRole(),null);
 			newUser.saveUser();
 
 		}catch(Exception e){

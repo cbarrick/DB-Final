@@ -4,21 +4,22 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class User extends ActionSupport {
+public class User {
 
 	private String user;
 	private String password;
 	private Integer Id;
 	private String Role;
-	private java.sql.Date timeStamp;
-	Connection conn = null;
-	String ret = ERROR;
+	private java.sql.Timestamp timeStamp;
+	static Connection conn = null;
+	//String ret = ERROR;
 
-	public User(Integer id, String email, String pwd, String role, java.sql.Date ts){
+	public User(Integer id, String email, String pwd, String role, java.sql.Timestamp ts){
 		Id = id;
 		user = email;
 		password = pwd;
@@ -31,20 +32,18 @@ public class User extends ActionSupport {
 	 */
 	public void saveUser() throws Exception{
 		try{
-			long time = System.currentTimeMillis();
-			java.sql.Date date = new java.sql.Date(time);
-			setTimeStamp(date);
+			
 			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
 			if(Id==null){
 				try{
-					String insertSql = "insert into users values(default,?,?,?,?)";
+					String insertSql = "insert into users values(default,?,?,'Guest',NOW())";
 					PreparedStatement ps = conn.prepareStatement(insertSql);
 					ps.setString(1,getUser());
 					ps.setString(2,getPassword());
-					ps.setString(3,getRole());
-					ps.setDate(4,getTimeStamp());
+					//ps.setString("Guest");
+					//ps.setTimestamp(4,getTimestamp());
 					ps.executeUpdate();	
 				}catch(SQLException e){
 					System.err.println("Unique Constraint violated");
@@ -59,7 +58,7 @@ public class User extends ActionSupport {
 					ps.setString(1,getUser());
 					ps.setString(2,getPassword());
 					ps.setString(3,getRole());
-					ps.setDate(4,getTimeStamp());
+					ps.setTimestamp(4,getTimestamp());
 					ps.setInt(5,getId());
 					ps.executeUpdate();	
 				}catch(Exception e){
@@ -83,22 +82,23 @@ public class User extends ActionSupport {
 	/*
 	 * Login credentials validation
 	 */
-	public String validateUser() {
+	public static boolean validateUser(String user, String pwd) {
 		try {
-
+			
+			String URL = "jdbc:mysql://localhost/final_project";
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
 			String sql = "SELECT * FROM users WHERE";
 			sql+=" Email = ? AND Password = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, getUser());
-			ps.setString(2, getPassword());
+			ps.setString(1,user);
+			ps.setString(2,pwd);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				setId(rs.getInt("User_Id"));
-				ret = SUCCESS;
-			}
+			if(rs.next())
+			return true;
 		} catch (Exception e) {
 			System.err.println("Invalid Email or Password");
-			ret = ERROR;
+			//ret = ERROR;
 		} finally {
 			if (conn != null) {
 				try {
@@ -108,7 +108,9 @@ public class User extends ActionSupport {
 				}
 			}
 		}
-		return ret;
+		return false;
+		
+		
 	}
 
 	public String getUser() {
@@ -141,11 +143,14 @@ public class User extends ActionSupport {
 	public void setRole(String Role) {
 		this.Role = Role;
 	}
-	public java.sql.Date getTimeStamp() {
-		return timeStamp;
-	}
 
-	public void setTimeStamp(java.sql.Date ts) {
-		this.timeStamp = ts;
+	public java.sql.Timestamp getTimestamp() {
+		java.util.Date today = new java.util.Date();
+		timeStamp =  new java.sql.Timestamp(today.getTime());
+		return timeStamp;
+	 
+	}
+	public void setTimeStamp(java.sql.Timestamp date) {
+		this.timeStamp = date;
 	}
 }

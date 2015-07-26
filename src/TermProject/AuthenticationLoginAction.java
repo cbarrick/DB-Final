@@ -18,8 +18,10 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 		try{
 
 			// check if the userName is already stored in the session
-			if (sessionMap.containsKey("user") && Session.getSessionByUser(user)!=null) {
+			if (Session.getSessionByUser(user)!=null) {
 				Session s = Session.getSessionByUser(user);
+				s.saveUserSession(s.getSessionsID());
+				sessionMap.put("user", user);
 				loggedUser = s.getEmail();
 				//loggedUser = (String) sessionMap.get("user");
 			}
@@ -34,8 +36,8 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 
 				// add userName to the session
 				sessionMap.put("user", user);
-				Session s = new Session(null,new java.sql.Date(System.currentTimeMillis()),user);
-				s.saveUser();
+				Session s = new Session(null,null,user);
+				s.saveUserSession(null);
 				return SUCCESS; // return welcome page
 			}
 		}catch(Exception e){
@@ -49,14 +51,15 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 	public String logout() {
 		// remove userName from the session
 		try{
-			if (sessionMap.containsKey("user") && Session.getSessionByUser(user)!=null) {
-				Session.deleteSession(user);
+			if (sessionMap.containsKey("user") && Session.getSessionByUser(sessionMap.get("user").toString())!=null) {
+				Session.deleteSession(sessionMap.get("user").toString());
 				sessionMap.remove("user");
+				return SUCCESS;
 			}
 		}catch(Exception e){
 			System.err.println(e);
 		}
-		return SUCCESS;
+		return ERROR;
 	}
 	@Override
 	public void setSession(Map<String, Object> sessionMap) {
