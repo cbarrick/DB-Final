@@ -111,7 +111,7 @@ public class Session {
 /*
  * delete session
  */
-	public static void deleteSession(String user) throws Exception{
+	public static void deleteSession(int userID) throws Exception{
 		Connection conn = null;
 		try{
 //			long time = System.currentTimeMillis();
