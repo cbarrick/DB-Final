@@ -1,19 +1,12 @@
 package TermProject;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Calendar;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.struts2.interceptor.ParameterAware;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 
-public class postAction extends ActionSupport implements ParameterAware {
+public class CreatePostAction extends ActionSupport implements ParameterAware {
 	
 	private String text;
 	private String title;
