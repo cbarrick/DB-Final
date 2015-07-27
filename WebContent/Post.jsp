@@ -21,7 +21,7 @@
 		<main class="container">
 			<article>
 				<header class="page-header">
-					<h1>{{title}}</h1>
+					<h1><s:property value="post.postTitle"/></h1>
 					<time datetime="{{date-rfc3339}}">{{date-human}}</time>
 				</header>
 				<div class="post">
