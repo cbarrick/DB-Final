@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Vector;
+import com.mysql.jdbc.Statement;
 
 public class Post {
 	
@@ -41,17 +42,15 @@ public class Post {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "INSERT INTO posts VALUES (";
-			if(postID == null)
-				sql += "default, ";
-			else
-				sql+= getPostID() + ", ";
-			sql += getPostTitle() + ", " + getPostText() + ", ";
-			sql += getUserID() + ", " + getTimestamp().toString() + ")";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			String sql = "INSERT INTO Posts VALUES ("default, ?, ?, ?, default");
+			PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, getPostTitle());
+			ps.setString(2, getPostText());
+			ps.setString(3, getUserID());
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
-			postID = rs.getInt("Comment_Id");
+			postID = rs.getInt(1);
 			numPosts++;
 		} catch (Exception e) {
 			System.err.println("Could not save comment");
