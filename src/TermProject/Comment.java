@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
+
+import com.mysql.jdbc.Statement;
+
 import java.util.ArrayList;
 
 public class Comment {
@@ -46,19 +49,18 @@ public class Comment {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "INSERT INTO Comments VALUES (";
-			if(commentID == null)
-				sql += "default, ";
-			else
-				sql+= getCommentID() + ", ";
-			sql += getCommentText() + ", " + getTimeCommented() + ", ";
-			sql += getUserID() + getPostID() + ")";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			String sql = "INSERT INTO Comments VALUES (default, ?, default, ?, ?)";
+			PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, commentText);
+			ps.setInt(2, userID);
+			ps.setInt(3, postID);
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
-			commentID = rs.getInt("Comment_Id");
+			commentID = rs.getInt(1);
 		} catch (Exception e) {
 			System.err.println("Could not save comment");
+			System.err.println(e);
 		} finally {
 			if (con != null) {
 				try {

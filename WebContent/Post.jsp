@@ -45,7 +45,7 @@
 				</ol>
 
 				<s:if test="%{getLoggedIn()}">
-					<form class="panel-body" action="{{new-comment-url}}" method="post">
+					<form class="panel-body" action="<s:url action='comment'/>" method="post">
 						<input type="hidden" name="pid" value="<s:property value="post.postID"/>">
 						<div class="form-group">
 							<label for="new-comment-text">New Comment</label>

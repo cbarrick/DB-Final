@@ -32,5 +32,9 @@
 		<action name="post" class="TermProject.ViewPostAction" method="execute">
 			<result name="success">/Post.jsp</result>
 		</action>
+		
+		<action name="comment" class="TermProject.CreateCommentAction" method="createComment">
+			<result name="success">/redirect.jsp</result>
+		</action>
    </package>
 </struts>
