@@ -67,7 +67,7 @@ public class CreatePostAction extends BaseAction {
 	{
 		
 		Date today = new Date();
-		pt = new Timestamp(today.getTime());
+		Timestamp pt = new Timestamp(today.getTime());
 		Post post = new Post(null, getTitle(), getText(), getCurrentUser().getID(), pt);
 		post.save();
 		
