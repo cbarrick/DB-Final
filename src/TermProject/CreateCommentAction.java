@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import org.apache.struts2.interceptor.ParameterAware;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class CreateCommentAction extends BaseAction {
+public class CreateCommentAction extends BaseAction implements ParameterAware {
 	
 	private String text;
 	private Timestamp commentTime;
@@ -58,17 +58,15 @@ public class CreateCommentAction extends BaseAction {
 		
 		Date today = new Date();
 		Timestamp ct = new Timestamp(today.getTime());
-		Comment comment = new Comment(null, getText(), ct, getCurrentUser().getID(), postId);
+		Comment comment = new Comment(null, getText(), ct, getCurrentUser().getId(), postId);
 		comment.save();
 		
 	}
 	
 	@Override
 	public void setParameters(Map<String, String[]> map) {
-		
 		text = map.get("text")[0];
-		postId = map.get("pid")[0];
-		
+		postId = Integer.parseInt(map.get("pid")[0]);
 	}
 	
 }
