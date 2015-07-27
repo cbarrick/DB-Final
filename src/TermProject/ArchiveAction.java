@@ -12,7 +12,7 @@ public class ArchiveAction extends BaseAction implements ParameterAware {
 	static int page;
 	
 	//get archive page number p. p = 0 gives the 5 most recent posts, p = 1 gives the next 5, etc.
-	public List<Post> archivePage() {
+	public List<Post> getPosts() {
 		
 		Post[] posts = new Post[5];
 		List<Integer> postIDs = Post.getPostIDs();
@@ -33,7 +33,7 @@ public class ArchiveAction extends BaseAction implements ParameterAware {
 
 	//only parameter to be passed is called Page_Number
 	public void setParameters(Map<String, String[]> map) {
-		page = Integer.parseInt(map.get("Page_Number")[0]);
+		page = Integer.parseInt(map.get("p")[0]);
 	}
 	
 	public String getPageTitle() {
