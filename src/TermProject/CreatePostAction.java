@@ -76,8 +76,8 @@ public class CreatePostAction extends BaseAction {
 	@Override
 	public void setParameters(Map<String, String[]> map) {
 		
-		text = map.get("Text")[0];
-		title=map.get("Post_Title")[0];
+		text = map.get("text")[0];
+		title=map.get("title")[0];
 		
 	}
 	
