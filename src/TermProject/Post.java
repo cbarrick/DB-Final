@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -14,7 +15,7 @@ public class Post {
 	private Integer userID;
 	private Integer postID;
 	private String PostText;
-	private String timeCommented;
+	private Timestamp time;
 	
 	private static int numPosts = 0;
 	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
@@ -25,12 +26,12 @@ public class Post {
 		
 	}
 
-	private Post(int pi, String pt, String Text , int UID, String tc) {
+	public Post(Integer pi, String pt, String Text , int UID, Timestamp tc) {
 		postID=pi;
 		PostTitle=pt;
 		PostText=Text;
 		userID=UID;
-		timeCommented =tc;
+		time =tc;
 	}
 
 	//saves the post to the database
@@ -46,7 +47,7 @@ public class Post {
 			else
 				sql+= getPostID() + ", ";
 			sql += getPostTitle() + ", " + getPostText() + ", ";
-			sql += getUserID() + getTimeCommented() + ")";
+			sql += getUserID() + ", " + getTimestamp().toString() + ")";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
@@ -104,12 +105,12 @@ public class Post {
 	}
 	
 	
-	public String getTimeCommented() {
-		return timeCommented;
+	public Timestamp getTimestamp() {
+		return time;
 	}
 	
-	public void setTimeCommented(String tc) {
-		timeCommented = tc;
+	public void setTimestamp(Timestamp tc) {
+		time = tc;
 	}
 	
 
@@ -131,9 +132,9 @@ public class Post {
 			String pt = rs.getString("Post_Title");
 			String Text = rs.getString("Text");
 			int UI = rs.getInt("User_Id");
-			String time = rs.getString("Post_Date");
+			Timestamp time = rs.getTimestamp("Post_Date");
 			
-			c= new Post(pi,pt,Text,UI,time);
+			c = new Post(pi,pt,Text,UI,time);
 		} catch (Exception e) {
 			System.err.println("Could not get comment");
 		} finally {
@@ -167,7 +168,7 @@ public class Post {
 				String pt = rs.getString("Post_Title");
 				String Text = rs.getString("Text");
 				int UI = rs.getInt("User_Id");
-				String time = rs.getString("Post_Date");
+				Timestamp time = rs.getTimestamp("Post_Date");
 				
 				c.addElement(new Post(pi,pt,Text,UI,time));
 			}
@@ -231,7 +232,7 @@ public class Post {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
-				searchResults.addElement(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getString("Post_Date")));
+				searchResults.addElement(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getTimestamp("Post_Date")));
 		} catch (Exception e) {
 			System.err.println("Could not search post titles");
 		} finally {

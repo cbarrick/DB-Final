@@ -17,7 +17,9 @@ public class ViewPostAction extends BaseAction implements ParameterAware {
 	}
 	
 	public List<Comment> getComments() {
-		return Comment.getComments(post.getPostID());
+		List<Comment> comments = Comment.getComments(post.getPostID());
+		System.out.println(comments.size());
+		return comments;
 	}
 	
 	public void setParameters(Map<String, String[]> params) {

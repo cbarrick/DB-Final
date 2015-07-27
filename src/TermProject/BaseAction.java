@@ -22,6 +22,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
 		return currentUser.getUser();
 	}
 	
+	public boolean getLoggedIn() {
+		boolean test = currentUser != null;
+		return test;
+	}
+	
 	@Override
 	public void setSession(Map<String, Object> session) {
 		Integer uid = (Integer) session.get("uid");

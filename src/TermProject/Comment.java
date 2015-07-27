@@ -183,4 +183,8 @@ public class Comment {
 		return c;
 
 	}
+	
+	public String toString() {
+		return this.commentText;
+	}
 }

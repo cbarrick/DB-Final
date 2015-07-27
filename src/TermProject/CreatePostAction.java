@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import org.apache.struts2.interceptor.ParameterAware;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class CreatePostAction extends BaseAction {
+public class CreatePostAction extends BaseAction implements ParameterAware {
 	
 	private String text;
 	private String title;
@@ -68,7 +68,7 @@ public class CreatePostAction extends BaseAction {
 		
 		Date today = new Date();
 		Timestamp pt = new Timestamp(today.getTime());
-		Post post = new Post(null, getTitle(), getText(), getCurrentUser().getID(), pt);
+		Post post = new Post(null, getTitle(), getText(), getCurrentUser().getId(), pt);
 		post.save();
 		
 	}
