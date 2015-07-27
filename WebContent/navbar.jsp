@@ -3,14 +3,16 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <nav class="navbar navbar-default container-fluid">
 			<div class="navbar-header">
-		<a class="navbar-brand" href="#">Blog</a>
+		<a class="navbar-brand" href="<s:url action='archive'/>?p=1">Blog</a>
 	</div>
 	<div class="collapse navbar-collapse">
-		<form class="navbar-form navbar-left" role="search" action="{{search-url}}" method="get">
-			<div class="form-group">
-				<input type="text" class="form-control" name="q" placeholder="Search">
-			</div>
-		</form>
+		<div class="navbar-left">
+			<form class="navbar-form" role="search" action="<s:url action='search'/>" method="get">
+				<div class="form-group">
+					<input type="text" class="form-control" name="q" placeholder="Search">
+				</div>
+			</form>
+		</div>
 		<div class="navbar-right">
 			<s:if test="%{!getLoggedIn()}">
 				<ul class="nav navbar-nav">
@@ -28,8 +30,11 @@
 			</s:if>
 			<s:else>
 				<p class="navbar-text">Signed in as <s:property value="currentUser"/></p>
-				<a class="btn btn-default navbar-btn" href="#">Logout</a>
+				<a class="btn btn-default navbar-btn" href="<s:url action='logout'/>">Logout</a>
 			</s:else>
 		</div>
+		<s:if test="%{getLoggedIn()}">
+			<a class="btn btn-default navbar-btn" href="<s:url action='newpost'/>">New Post</a>
+		</s:if>
 	</div>
 </nav>

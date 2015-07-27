@@ -14,7 +14,7 @@
 		<action name="signupaction" 
 			class="TermProject.SignUpAction"
 			method="signUp">
-			<result name="success">/SignUp_.jsp</result>
+			<result name="success">/signup_success.jsp</result>
 		</action>   
 	      
 		<action name="loginaction" 
@@ -50,6 +50,14 @@
 		
 		<action name="archive" class="TermProject.ArchiveAction">
 			<result>/list.jsp</result>
+		</action>
+		
+		<action name="search" class="TermProject.SearchAction" method="searchTitles">
+			<result>/list.jsp</result>
+		</action>
+		
+		<action name="logout" class="TermProject.LogoutAction" method="logout">
+			<result>/redirect.jsp</result>
 		</action>
    </package>
 </struts>

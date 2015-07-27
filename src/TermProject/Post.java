@@ -227,13 +227,14 @@ public class Post {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "SELECT * FROM posts WHERE Post_Title LIKE %" + s + "%";
+			String sql = "SELECT * FROM posts WHERE Post_Title LIKE '%" + s + "%'";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 				searchResults.add(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getTimestamp("Post_Date")));
 		} catch (Exception e) {
 			System.err.println("Could not search post titles");
+			System.err.println(e);
 		} finally {
 			if (con != null) {
 				try {
