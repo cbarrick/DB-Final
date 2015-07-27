@@ -1,6 +1,7 @@
 package TermProject;
 
 import java.util.Map;
+import java.util.List;
 import org.apache.struts2.interceptor.ParameterAware;
 
 public class ViewPostAction extends BaseAction implements ParameterAware {
