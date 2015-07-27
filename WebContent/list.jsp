@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -13,57 +16,26 @@
 	</head>
 	<body>
 
-		<nav class="navbar navbar-default container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Blog</a>
-			</div>
-			<div class="collapse navbar-collapse">
-				<form class="navbar-form navbar-left" role="search" action="{{search-url}}" method="get">
-					<div class="form-group">
-						<input type="text" class="form-control" name="q" placeholder="Search">
-					</div>
-				</form>
-				<div class="navbar-right">
-					<ul class="nav navbar-nav">
-						<li class="dropdown">
-							<form id="login-form" action="{{login-url}}" method="post"></form>
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Login <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><input type="text" class="form-control" form="login-form" name="email" placeholder="email"></li>
-								<li><input type="password" class="form-control" form="login-form" name="password" placeholder="password"></li>
-								<li><button class="btn btn-default" form="login-form">Login</button></li>
-							</ul>
-						</li>
-						<li><a href="{{signup-url}}">Signup</a></li>
-					</ul>
-					<!-- <p class="navbar-text">Signed in as {{email}}</p> -->
-				</div>
-			</div>
-		</nav>
+		<jsp:include page="navbar.jsp"></jsp:include>
 
 		<main class="container">
 			<section>
 				<header class="page-header">
-					<h1>Search / Archive</h1>
-					<span>{{search-term}} / {{archive-page}}</span>
+					<h1><s:property value="pageTitle"/></h1>
 				</header>
-				<div class="list-group">
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
-					<a class="list-group-item" href="{{post-url}}">{{post-title}} <small>{{post-date}}</small></a>
+				
+				<div class="list-group">				
+					<s:iterator value="posts">
+						<a class="list-group-item" href="<s:url action='post'/>?id=<s:property value="postID"/>">
+							<h2><s:property value="postTitle"/> <small><s:property value="timestamp"/></small></h2>
+						</a>
+					</s:iterator>
 				</div>
 			</section>
 			<nav>
 				<ul class="pager">
-					<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-					<li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
+					<li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
+					<li class="next disabled"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
 			</nav>
 		</main>

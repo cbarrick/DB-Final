@@ -1,1 +1,1 @@
-<% response.sendRedirect("/Blog/hello"); %>
+<% response.sendRedirect(request.getHeader("Referer")); %>

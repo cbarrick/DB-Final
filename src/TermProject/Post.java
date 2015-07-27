@@ -151,10 +151,10 @@ public class Post {
 	}
 
 	// get posts between two dates
-	public static Vector<Post> getPostByDate(String from, String totime) {
+	public static List<Post> getPostByDate(String from, String totime) {
 
 		Connection con = null;
-		Vector<Post> c = new Vector<Post>();
+		List<Post> c = new ArrayList<Post>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -169,7 +169,7 @@ public class Post {
 				int UI = rs.getInt("User_Id");
 				Timestamp time = rs.getTimestamp("Post_Date");
 				
-				c.addElement(new Post(pi,pt,Text,UI,time));
+				c.add(new Post(pi,pt,Text,UI,time));
 			}
 
 		} catch (Exception e) {
@@ -219,10 +219,10 @@ public class Post {
 	}
 	
 	//returns posts matching a search on post title
-	public static Vector<Post> searchTitle(String s) {
+	public static List<Post> searchTitle(String s) {
 		
 		Connection con = null;
-		Vector<Post> searchResults = new Vector<Post>();
+		List<Post> searchResults = new ArrayList<Post>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -231,7 +231,7 @@ public class Post {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
-				searchResults.addElement(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getTimestamp("Post_Date")));
+				searchResults.add(new Post(rs.getInt("Post_Id"), rs.getString("Post_Title"), rs.getString("Text"), rs.getInt("User_Id"), rs.getTimestamp("Post_Date")));
 		} catch (Exception e) {
 			System.err.println("Could not search post titles");
 		} finally {
