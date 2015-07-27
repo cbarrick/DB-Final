@@ -148,7 +148,7 @@ public class Comment {
 	}
 
 	// get comments associated with a given post
-	public static ArrayList<Comment> getComments(int postID) {
+	public static List<Comment> getComments(int postID) {
 
 		Connection con = null;
 		List<Comment> c = new ArrayList<Comment>();
