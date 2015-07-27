@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 import com.mysql.jdbc.Statement;
 
 public class Post {
-	
 	
 	private String PostTitle;
 	private Integer userID;
@@ -189,10 +189,10 @@ public class Post {
 	}
 	
 	//returns a vector of all post id's
-	public static Vector<Integer> getPostIDs() {
+	public static List<Integer> getPostIDs() {
 		
 		Connection con = null;
-		Vector<Integer> postIDs = new Vector<Integer>();
+		List<Integer> postIDs = new ArrayList<Integer>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -201,7 +201,7 @@ public class Post {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
-				postIDs.addElement(rs.getInt("Post_Id"));
+				postIDs.add(rs.getInt("Post_Id"));
 		} catch (Exception e) {
 			System.err.println("Could not get post id's");
 		} finally {
