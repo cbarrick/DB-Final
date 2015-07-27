@@ -53,14 +53,14 @@ public class CreateCommentAction extends BaseAction implements ParameterAware {
 		commentTime = t;	
 	}
 	
-	public void createComment()
+	public String createComment()
 	{
 		
 		Date today = new Date();
 		Timestamp ct = new Timestamp(today.getTime());
 		Comment comment = new Comment(null, getText(), ct, getCurrentUser().getId(), postId);
 		comment.save();
-		
+		return "success";
 	}
 	
 	@Override
