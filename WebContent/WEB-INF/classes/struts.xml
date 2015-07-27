@@ -28,5 +28,9 @@
 		<action name="signup">
 			<result>/signup.jsp</result>
 		</action>
+		
+		<action name="post" class="TermProject.ViewPostAction" method="execute">
+			<result name="success">/Post.jsp</result>
+		</action>
    </package>
 </struts>

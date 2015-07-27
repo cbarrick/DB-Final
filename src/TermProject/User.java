@@ -19,7 +19,10 @@ public class User {
 	private String Role;
 	private java.sql.Timestamp timeStamp;
 	static Connection conn = null;
-	//String ret = ERROR;
+	
+	private static final String URL = "jdbc:mysql://localhost:3306/Blog";
+	private static final String ROOT = "root";
+	private static final String ROOTPW = "root123";
 
 	public User(Integer id, String email, String pwd, String role, java.sql.Timestamp ts){
 		Id = id;
@@ -87,9 +90,9 @@ public class User {
 	public static boolean validateUser(Integer userID, String pwd) {
 		try {
 			
-			String URL = "jdbc:mysql://localhost/final_project";
+			String URL = "jdbc:mysql://localhost:3306/Blog";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String sql = "SELECT * FROM users WHERE";
 			sql+=" User_Id = ? AND Password = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -115,16 +118,43 @@ public class User {
 		
 	}
 	
+	public static User getUserById(int id) {
+		try {	
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
+			String sql = "SELECT * FROM users WHERE";
+			sql+=" User_Id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1,id);
+			ResultSet rs = ps.executeQuery();
+			
+			rs.next();
+			User newUser = new User(rs.getInt("User_Id"),rs.getString("Email"),rs.getString("Password"),rs.getString("Role"),rs.getTimestamp("SignUp_Date"));
+			return newUser;
+			
+		} catch (Exception e) {
+			System.err.println("Invalid Email");
+			//ret = ERROR;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					System.err.println("Could not close connection");
+				}
+			}
+		}
+		return null;
+	}
+	
 /*return user id from user
  * 
  *
  */
 	public static User getUserByName(String user) {
 		try {
-			
-			String URL = "jdbc:mysql://localhost/final_project";
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(URL, "mgadgil09", "mgadgil09");
+			conn = DriverManager.getConnection(URL, ROOT, ROOTPW);
 			String sql = "SELECT * FROM users WHERE";
 			sql+=" Email = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -132,8 +162,8 @@ public class User {
 			ResultSet rs = ps.executeQuery();
 			
 			rs.next();
-				User newUser = new User(rs.getInt("User_Id"),user,rs.getString("Password"),rs.getString("Role"),rs.getTimestamp("SignUp_Date"));
-				return newUser;
+			User newUser = new User(rs.getInt("User_Id"),user,rs.getString("Password"),rs.getString("Role"),rs.getTimestamp("SignUp_Date"));
+			return newUser;
 			
 		} catch (Exception e) {
 			System.err.println("Invalid Email");
@@ -191,5 +221,9 @@ public class User {
 	}
 	public void setTimeStamp(java.sql.Timestamp date) {
 		this.timeStamp = date;
+	}
+	
+	public String toString() {
+		return user;
 	}
 }
