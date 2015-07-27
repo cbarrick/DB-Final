@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Comment {
 	
@@ -147,10 +148,10 @@ public class Comment {
 	}
 
 	// get comments associated with a given post
-	public static Vector<Comment> getComments(int postID) {
+	public static ArrayList<Comment> getComments(int postID) {
 
 		Connection con = null;
-		Vector<Comment> c = new Vector<Comment>();
+		List<Comment> c = new ArrayList<Comment>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -164,7 +165,7 @@ public class Comment {
 				int pi = rs.getInt("Post_Id");
 				String text = rs.getString("Description");
 				Timestamp time = rs.getTimestamp("Comment_Date");
-				c.addElement(new Comment(ci, text, time, ui, pi));
+				c.add(new Comment(ci, text, time, ui, pi));
 			}
 
 		} catch (Exception e) {
