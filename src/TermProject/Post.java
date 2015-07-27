@@ -42,24 +42,24 @@ public class Post {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(URL, ROOT, ROOTPW);
-			String sql = "INSERT INTO Posts VALUES ("default, ?, ?, ?, default");
+			String sql = "INSERT INTO Posts VALUES (default, ?, ?, ?, default)";
 			PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, getPostTitle());
 			ps.setString(2, getPostText());
-			ps.setString(3, getUserID());
+			ps.setInt(3, getUserID());
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
 			postID = rs.getInt(1);
 			numPosts++;
 		} catch (Exception e) {
-			System.err.println("Could not save comment");
+			System.err.println("Could not save post");
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
 				} catch (Exception e) {
-					System.err.println("Could not close comment saving connection");
+					System.err.println("Could not close post saving connection");
 				}
 			}
 		}

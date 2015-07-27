@@ -65,12 +65,10 @@ public class CreatePostAction extends BaseAction implements ParameterAware {
 	
 	public void createPost()
 	{
-		
 		Date today = new Date();
 		Timestamp pt = new Timestamp(today.getTime());
 		Post post = new Post(null, getTitle(), getText(), getCurrentUser().getId(), pt);
-		post.save();
-		
+		post.save();	
 	}
 	
 	@Override
