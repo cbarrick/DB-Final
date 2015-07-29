@@ -46,7 +46,7 @@ public class AuthenticationLoginAction extends ActionSupport implements SessionA
 			System.out.println(e);
 		}
 		// in other cases, return login page
-		return INPUT;
+		return SUCCESS;
 
 	}
 

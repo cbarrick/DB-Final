@@ -11,72 +11,27 @@ public class CreatePostAction extends BaseAction implements ParameterAware {
 	
 	private String text;
 	private String title;
-	private Timestamp postTime;
-	private Integer userId;
-	private Integer PostId;
+	private Post post;
 	
-	public Integer getUserId() {
-		return userId;
+	public Post getPost() {
+		return post;
 	}
 	
-	public void setUserId(int Id) {
-		this.userId=Id;
-	}
-	
-	public String getText()
-	{
-		return text;
-	}
-	
-	public void setText(String t)
-	{
-		this.text=t;
-	}
-	
-	public String getTitle()
-	{
-		return title;
-	}
-	
-	public void setTitle(String t)
-	{
-		this.title=t;
-	}
-	
-	public void setPostId(int Id)
-	{
-		this.PostId=Id;
-	}
-	
-	public Integer getPostId()
-	{
-		return PostId;
-	}
-	
-	public Timestamp getPostTime()
-	{
-		return postTime;
-	}
-	
-	public void setTimestamp(Timestamp t)
-	{
-		postTime = t;	
-	}
-	
-	public void createPost()
+	public String createPost()
 	{
 		Date today = new Date();
 		Timestamp pt = new Timestamp(today.getTime());
-		Post post = new Post(null, getTitle(), getText(), getCurrentUser().getId(), pt);
-		post.save();	
+		if (title != null && text!= null) {
+			post = new Post(null, title, text, getCurrentUser().getId(), pt);
+			post.save();	
+		}
+		return SUCCESS;
 	}
 	
 	@Override
 	public void setParameters(Map<String, String[]> map) {
-		
 		text = map.get("text")[0];
-		title=map.get("title")[0];
-		
+		title = map.get("title")[0];
 	}
 	
 	

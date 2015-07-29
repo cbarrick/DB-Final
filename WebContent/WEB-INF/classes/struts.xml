@@ -7,25 +7,24 @@
 	<constant name="struts.devMode" value="true" />
 	
 	<package name="UserLogin" extends="struts-default">
-		<action name="">
+		<action name="index">
 			<result>/index.jsp</result>
 		</action>
 	
 		<action name="signupaction" 
 			class="TermProject.SignUpAction"
 			method="signUp">
-			<result name="success">/signup_success.jsp</result>
+			<result type="redirectAction">
+	            <param name="actionName">index</param>
+        	</result>
 		</action>   
 	      
 		<action name="loginaction" 
 			class="TermProject.AuthenticationLoginAction"
 			method="login">
-			<result>/redirect.jsp</result>
-		</action>
-		
-		<action name="logout" class="TermProject.AuthenticationLoginAction"
-			method="logout">
-			<result name="success">/logout.jsp</result>
+			<result type="redirectAction">
+	            <param name="actionName">index</param>
+        	</result>
 		</action>
 		
 		<action name="signup">
@@ -45,7 +44,9 @@
 		</action>
 		
 		<action name="createpost" class="TermProject.CreatePostAction" method="createPost">
-			<result name="success">/redirect.jsp</result>
+			<result type="redirectAction">
+	            <param name="actionName">index</param>
+        	</result>
 		</action>
 		
 		<action name="archive" class="TermProject.ArchiveAction">
